@@ -14,7 +14,7 @@ public class MemStore implements Store {
 
     @Override
     public List<Post> getAll() {
-        return new ArrayList<Post>(mem.values());
+        return new ArrayList<>(mem.values());
     }
 
     @Override

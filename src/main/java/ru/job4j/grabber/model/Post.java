@@ -1,28 +1,17 @@
 package ru.job4j.grabber.model;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "Posts")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data @AllArgsConstructor @NoArgsConstructor
 public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
     private String title;
-    @Column
     private String link;
-    @Column
     private String description;
-    @Column
     private long time;
 
     @Override

@@ -2,7 +2,6 @@ package ru.job4j.grabber.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.annotation.Configuration;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface Store {
     void save(Post post) throws SQLException;
 
-    List<Post> getAll() throws SQLException;
+    List<Post> getAll();
 
     Optional<Post> findById(Long id);
 }

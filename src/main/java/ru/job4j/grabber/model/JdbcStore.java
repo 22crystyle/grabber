@@ -3,7 +3,10 @@ package ru.job4j.grabber.model;
 import lombok.extern.slf4j.Slf4j;
 import ru.job4j.grabber.service.Store;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +49,7 @@ public class JdbcStore implements Store {
     public Optional<Post> findById(Long id) {
         try {
             ResultSet result = statement.executeQuery("SELECT * FROM post WHERE id = %d".formatted(id));
-            return result.next() ? Optional.of(new Post(result.getLong(1), result.getString(2), result.getString(3), result.getString(4), result.getInt(5) )) : Optional.empty();
+            return result.next() ? Optional.of(new Post(result.getLong(1), result.getString(2), result.getString(3), result.getString(4), result.getInt(5))) : Optional.empty();
         } catch (SQLException ex) {
             log.error(ex.getMessage(), ex);
         }

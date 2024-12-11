@@ -1,1 +1,2 @@
-ALTER TABLE grabber.post AUTO_INCREMENT = 1;
+ALTER TABLE grabber.post
+    AUTO_INCREMENT = 1;

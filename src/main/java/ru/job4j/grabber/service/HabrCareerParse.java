@@ -1,15 +1,13 @@
 package ru.job4j.grabber.service;
 
-import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.job4j.grabber.model.Post;
 import ru.job4j.grabber.utils.DateTimeParser;
-import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +17,10 @@ import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 @Slf4j
 public class HabrCareerParse implements Parse {
     private static final String SOURCE_LINK = "https://career.habr.com";
-    private static final String PREFIX = "/vacancies?page=";
-    private static final String SUFFIX = "&q=Java%20developer&type=all";
     private static final int PAGE_COUNT = 5;
 
     private final DateTimeParser dateTimeParser;
+
     public HabrCareerParse(DateTimeParser dateTimeParser) {
         this.dateTimeParser = dateTimeParser;
     }
@@ -40,11 +37,14 @@ public class HabrCareerParse implements Parse {
                 Elements rows = document.select(".vacancy-card__inner");
                 rows.forEach(row -> {
                     var titleElement = row.select(".vacancy-card__title").first();
-                    var linkElement = titleElement.child(0);
-                    var dateElement = row.select(".vacancy-card__date").first().child(0).attr("datetime");
-                    var descriptionLink = SOURCE_LINK + linkElement.attr("href");
+                    Element linkElement = null;
+                    if (titleElement != null) {
+                        linkElement = titleElement.child(0);
+                    }
+                    var dateElement = Objects.requireNonNull(row.select(".vacancy-card__date").first()).child(0).attr("datetime");
+                    var descriptionLink = SOURCE_LINK + (linkElement != null ? linkElement.attr("href") : null);
 
-                    String vacancyName = titleElement.text();
+                    String vacancyName = titleElement != null ? titleElement.text() : null;
                     String vacancyLink = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
                     String date = dateTimeParser.parse(dateElement).format(BASIC_ISO_DATE);
 
