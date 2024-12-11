@@ -45,7 +45,10 @@ public class HabrCareerParse implements Parse {
                     var descriptionLink = SOURCE_LINK + (linkElement != null ? linkElement.attr("href") : null);
 
                     String vacancyName = titleElement != null ? titleElement.text() : null;
-                    String vacancyLink = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
+                    String vacancyLink = String.format(
+                            "%s%s",
+                            SOURCE_LINK,
+                            linkElement != null ? linkElement.attr("href") : null);
                     String date = dateTimeParser.parse(dateElement).format(BASIC_ISO_DATE);
 
                     var post = new Post();
