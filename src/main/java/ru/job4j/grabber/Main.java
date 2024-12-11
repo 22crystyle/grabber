@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.grabber.model.JdbcStore;
 import ru.job4j.grabber.model.Post;
 import ru.job4j.grabber.service.*;
+import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -37,8 +38,8 @@ public class Main {
 
             Post post1 = new Post(255L, "Title", "Links", "Направление разработки 'Management system' открыто много лет назад, так как всем этим оборудованием нужно как-то управлять.", 1L);
 
-            HabrCareerParse parse = new HabrCareerParse();
-            List<Post> list = parse.fetch();
+            HabrCareerParse parse = new HabrCareerParse(new HabrCareerDateTimeParser());
+            List<Post> list = parse.list("https://career.habr.com/vacancies?page=1&q=Java%20developer&type=all");
             for (Post post : list) {
                 store.save(post);
             }
