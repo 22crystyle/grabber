@@ -4,10 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.job4j.grabber.model.JdbcStore;
 import ru.job4j.grabber.model.Post;
-import ru.job4j.grabber.service.Config;
-import ru.job4j.grabber.service.HabrCareerParse;
-import ru.job4j.grabber.service.SchedulerManager;
-import ru.job4j.grabber.service.SuperJobGrab;
+import ru.job4j.grabber.service.*;
 import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
 import java.sql.DriverManager;
