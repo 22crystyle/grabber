@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import ru.job4j.grabber.stores.Store;
 
 public class SchedulerManager {
     private static final Logger log = LogManager.getLogger(SchedulerManager.class);

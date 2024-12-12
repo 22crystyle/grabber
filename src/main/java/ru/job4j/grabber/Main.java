@@ -2,7 +2,7 @@ package ru.job4j.grabber;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ru.job4j.grabber.model.JdbcStore;
+import ru.job4j.grabber.stores.JdbcStore;
 import ru.job4j.grabber.model.Post;
 import ru.job4j.grabber.service.*;
 import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
@@ -31,12 +31,19 @@ public class Main {
                 store.save(post);
             }
 
+            /*Store store = new MemStore();
+            var post = new Post();
+            post.setTitle("ФЫАПВ♠Δ");
+            store.save(post);*/
+
             var scheduler = new SchedulerManager();
             scheduler.init();
             scheduler.load(
                     Integer.parseInt(config.get("rabbit.interval")),
                     SuperJobGrab.class,
                     store);
+
+            new Web(store).start(Integer.parseInt(config.get("server.port")));
         } catch (SQLException sql) {
             log.error("When create a connection", sql);
         }

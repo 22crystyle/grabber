@@ -2,6 +2,7 @@ package ru.job4j.grabber.service;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
+import ru.job4j.grabber.stores.Store;
 
 public class SuperJobGrab implements Job {
     @Override
