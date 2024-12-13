@@ -8,21 +8,29 @@ import ru.job4j.grabber.model.Post;
 import ru.job4j.grabber.utils.DateTimeParser;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.Lock;
 
 import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 
 @Slf4j
 public class HabrCareerParse implements Parse {
     private static final String SOURCE_LINK = "https://career.habr.com";
-    private static final int PAGE_COUNT = 5;
+    private static int pageCount;
 
     private final DateTimeParser dateTimeParser;
 
-    public HabrCareerParse(DateTimeParser dateTimeParser) {
+    /*public HabrCareerParse(DateTimeParser dateTimeParser) {
         this.dateTimeParser = dateTimeParser;
+    }*/
+
+    public HabrCareerParse(DateTimeParser dateTimeParser, int pageCount) {
+        this.dateTimeParser = dateTimeParser;
+        HabrCareerParse.pageCount = pageCount;
     }
 
     @Override
@@ -30,35 +38,34 @@ public class HabrCareerParse implements Parse {
         var result = new ArrayList<Post>();
 
         try {
-            for (int pageNumber = 1; pageNumber <= PAGE_COUNT; pageNumber++) {
-                String fullLink = link.replace("page=1", "page=" + pageNumber);
-                var connection = Jsoup.connect(fullLink);
-                var document = connection.get();
-                Elements rows = document.select(".vacancy-card__inner");
-                rows.forEach(row -> {
-                    var titleElement = row.select(".vacancy-card__title").first();
-                    Element linkElement = null;
-                    if (titleElement != null) {
-                        linkElement = titleElement.child(0);
-                    }
-                    var dateElement = Objects.requireNonNull(row.select(".vacancy-card__date").first()).child(0).attr("datetime");
-                    var descriptionLink = SOURCE_LINK + (linkElement != null ? linkElement.attr("href") : null);
+            String fullLink = link.replace("page=1", "page=" + pageCount);
+            var connection = Jsoup.connect(fullLink);
+            log.info("full link: {}", fullLink);
+            var document = connection.get();
+            Elements rows = document.select(".vacancy-card__inner");
+            rows.forEach(row -> {
+                var titleElement = row.select(".vacancy-card__title").first();
+                Element linkElement = null;
+                if (titleElement != null) {
+                    linkElement = titleElement.child(0);
+                }
+                var dateElement = Objects.requireNonNull(row.select(".vacancy-card__date").first()).child(0).attr("datetime");
+                var descriptionLink = SOURCE_LINK + (linkElement != null ? linkElement.attr("href") : null);
 
-                    String vacancyName = titleElement != null ? titleElement.text() : null;
-                    String vacancyLink = String.format(
-                            "%s%s",
-                            SOURCE_LINK,
-                            linkElement != null ? linkElement.attr("href") : null);
-                    String date = dateTimeParser.parse(dateElement).format(BASIC_ISO_DATE);
+                String vacancyName = titleElement != null ? titleElement.text() : null;
+                String vacancyLink = String.format(
+                        "%s%s",
+                        SOURCE_LINK,
+                        linkElement != null ? linkElement.attr("href") : null);
+                String date = dateTimeParser.parse(dateElement).format(BASIC_ISO_DATE);
 
-                    var post = new Post();
-                    post.setTitle(vacancyName);
-                    post.setLink(vacancyLink);
-                    post.setTime(Long.parseLong(date));
-                    post.setDescription(retrieveDescription(descriptionLink).replace('\'', '\"'));
-                    result.add(post);
-                });
-            }
+                var post = new Post();
+                post.setTitle(vacancyName);
+                post.setLink(vacancyLink);
+                post.setTime(Long.parseLong(date));
+                post.setDescription(retrieveDescription(descriptionLink).replace('\'', '\"'));
+                result.add(post);
+            });
         } catch (IOException io) {
             log.error(io.getMessage(), io);
         }

@@ -25,11 +25,13 @@ public class Main {
                     config.get("spring.datasource.name"),
                     config.get("spring.datasource.password")));
 
-            HabrCareerParse parse = new HabrCareerParse(new HabrCareerDateTimeParser());
-            List<Post> list = parse.list("https://career.habr.com/vacancies?page=1&q=Java%20developer&type=all");
-            for (Post post : list) {
+            //HabrCareerParse parse = new HabrCareerParse(new HabrCareerDateTimeParser());
+            //List<Post> list = parse.list("https://career.habr.com/vacancies?page=1&q=Java%20developer&type=all");
+            List<Post> list = ThreadSafePageIterator.run("https://career.habr.com/vacancies?page=1&q=Java%20developer&type=all");
+            /*for (Post post : list) {
                 store.save(post);
-            }
+            }*/
+            store.saveList(list);
 
             /*Store store = new MemStore();
             var post = new Post();
