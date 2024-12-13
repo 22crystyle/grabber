@@ -29,11 +29,11 @@ public class Post {
     @Override
     public String toString() {
         return "Post{" +
-                "\nid=" + id +
-                "\n, title='" + title + '\'' +
-                "\n, link='" + link + '\'' +
-                "\n, description='" + description + '\'' +
-                "\n, time=" + time +
-                "\n}";
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", link='" + link + '\'' +
+                ", description='" + description + '\'' +
+                ", time=" + time +
+                "}";
     }
 }

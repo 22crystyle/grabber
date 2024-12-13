@@ -11,5 +11,9 @@ public interface Store {
 
     List<Post> getAll();
 
+    long getCount();
+
     Optional<Post> findById(Long id);
+
+    void saveList(List<Post> posts) throws SQLException;
 }

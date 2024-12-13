@@ -8,19 +8,16 @@ import ru.job4j.grabber.model.Post;
 import ru.job4j.grabber.utils.DateTimeParser;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.locks.Lock;
 
 import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 
 @Slf4j
 public class HabrCareerParse implements Parse {
     private static final String SOURCE_LINK = "https://career.habr.com";
-    private static int pageCount;
+    private final int pageCount;
 
     private final DateTimeParser dateTimeParser;
 
@@ -30,7 +27,7 @@ public class HabrCareerParse implements Parse {
 
     public HabrCareerParse(DateTimeParser dateTimeParser, int pageCount) {
         this.dateTimeParser = dateTimeParser;
-        HabrCareerParse.pageCount = pageCount;
+        this.pageCount = pageCount;
     }
 
     @Override
@@ -39,8 +36,8 @@ public class HabrCareerParse implements Parse {
 
         try {
             String fullLink = link.replace("page=1", "page=" + pageCount);
-            var connection = Jsoup.connect(fullLink);
             log.info("full link: {}", fullLink);
+            var connection = Jsoup.connect(fullLink);
             var document = connection.get();
             Elements rows = document.select(".vacancy-card__inner");
             rows.forEach(row -> {

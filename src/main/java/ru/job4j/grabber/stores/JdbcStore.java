@@ -49,6 +49,21 @@ public class JdbcStore implements Store {
     }
 
     @Override
+    public long getCount() {
+        int result;
+        ResultSet set;
+        try {
+            Statement statement = connection.createStatement();
+            set = statement.executeQuery("SELECT count(*) FROM post");
+            set.next();
+            result = set.getInt(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    @Override
     public Optional<Post> findById(Long id) {
         try {
             Statement statement = connection.createStatement();
@@ -61,6 +76,7 @@ public class JdbcStore implements Store {
         return Optional.empty();
     }
 
+    @Override
     public void saveList(List<Post> posts) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
             "INSERT INTO post(name, text, link, created) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE link=?"
