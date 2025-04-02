@@ -80,7 +80,7 @@ grabber/
 
 ## 📦 Dependencies
 - MariaDB JDBC Driver
-- [JSoup|https://jsoup.org] - HTML parsing
+- JSoup - HTML parsing
 - Javalin - Web server
 - Quartz - Job scheduling
 - Lombok - Boilerplate reduction
