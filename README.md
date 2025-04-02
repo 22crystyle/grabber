@@ -15,8 +15,6 @@ A web scraping application for collecting Java developer job postings from Habr 
 - MariaDB database
 - Gradle 7+
 
-## 🛠️ Installation
-
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/yourusername/grabber.git
@@ -47,7 +45,7 @@ server.port=9000
 rabbit.interval=4
 ```
 
-### 🏃 Usage
+## 🏃 Usage
 ```bash
 ./gradlew build
 java -jar build/libs/grabber-0.0.1-SNAPSHOT.jar
@@ -55,7 +53,7 @@ java -jar build/libs/grabber-0.0.1-SNAPSHOT.jar
 Access the web interface at:
 http://localhost:9000
 
-### 📂 Project Structure
+## 📂 Project Structure
 ```
 grabber/
 ├── src/
@@ -71,7 +69,7 @@ grabber/
 └── build.gradle.kts               # Build configuration
 ```
 
-### ⚙️ Configuration Options
+## ⚙️ Configuration Options
 | Property                   | Description                  | Default |
 |----------------------------|------------------------------|---------|
 | server.port                | Web server port              | 9000    |
@@ -80,7 +78,7 @@ grabber/
 | spring.datasource.name     | Database username            | -       |
 | spring.datasource.password | Database password            | -       |
 
-### 📦 Dependencies
+## 📦 Dependencies
 - MariaDB JDBC Driver
 - [JSoup|https://jsoup.org] - HTML parsing
 - Javalin - Web server
